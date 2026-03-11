@@ -7,7 +7,7 @@ router = APIRouter()
 
 class PlanRequest(BaseModel):
     query: str = Field(..., description="User's travel query or goal")
-    preferences: Dict[str, Any] = Field(..., description="User's travel preferences (style, season, budget, etc.)")
+    preferences: Any = Field(..., description="User's travel preferences (style, season, budget, etc.)")
 
 class PlanResponse(BaseModel):
     summary: str = Field(..., description="Brief summary of the generated plan")
@@ -16,7 +16,7 @@ class PlanResponse(BaseModel):
 
 class InsightsRequest(BaseModel):
     selection: str = Field(..., description="The chosen element (e.g., a destination or activity)")
-    context: Dict[str, Any] = Field(..., description="Additional context for generating insights")
+    context: Any = Field(..., description="Additional context for generating insights")
 
 class InsightsResponse(BaseModel):
     insights: List[Any] = Field(..., description="Generated insights")
