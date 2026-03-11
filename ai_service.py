@@ -1,6 +1,14 @@
-def _coerce_unstructured_payload(raw_text: str) -> Dict[str, Any]:
+import os
+import json
+import re
+from typing import Any, List, Dict
+import httpx
+
+
+def _coerce_unstructured_payload(raw_text: str) -> dict[str, object]:
     compact = raw_text.strip()
-    tags = [part.strip(" -•\t") for part in re.split(r",|\\n", compact) if part.strip(" -•\t")]
+    normalized = compact.replace("\n", ",")
+    tags = [part.strip(" -•\t") for part in normalized.split(",") if part.strip(" -•\t")]
     return {
         "note": "Model returned plain text instead of JSON",
         "raw": compact,
@@ -8,13 +16,6 @@ def _coerce_unstructured_payload(raw_text: str) -> Dict[str, Any]:
         "summary": compact,
         "tags": tags[:6],
     }
-
-
-import os
-import json
-import re
-from typing import Any, List, Dict
-import httpx
 
 INF_ENDPOINT = "https://inference.do-ai.run/v1/chat/completions"
 API_KEY = os.getenv("DIGITALOCEAN_INFERENCE_KEY")
