@@ -7,31 +7,35 @@ import httpx
 
 def _coerce_unstructured_payload(raw_text: str) -> dict[str, object]:
     compact = raw_text.strip()
-    normalized = compact.replace("\n", ",")
-    tags = [part.strip(" -•\t") for part in normalized.split(",") if part.strip(" -•\t")]
-    if not tags:
-        tags = ["guided plan", "saved output", "shareable insight"]
-    headline = tags[0].title()
-    items = []
-    for index, tag in enumerate(tags[:3], start=1):
-        items.append(
-            {
-                "title": f"Stage {index}: {tag.title()}",
-                "detail": f"Use {tag} to move the request toward a demo-ready outcome.",
-                "score": min(96, 80 + index * 4),
-            }
-        )
-    highlights = [tag.title() for tag in tags[:3]]
+    subject = compact if compact and compact.lower() != "ai service fallback" else "a culture-rich city escape"
+    items = [
+        {
+            "title": "Day 1: Signature neighborhood route",
+            "detail": f"Start with a high-character arrival sequence shaped around {subject}, local coffee, and a memorable golden-hour stop.",
+            "score": 84,
+        },
+        {
+            "title": "Day 2: Visual highlight block",
+            "detail": "Stack the strongest museum, food, and photo moments into one smooth mid-trip day with minimal transit friction.",
+            "score": 88,
+        },
+        {
+            "title": "Day 3: Flexible finale",
+            "detail": "Reserve the final lane for shopping, slow wandering, and one last rooftop or riverside scene before departure.",
+            "score": 92,
+        },
+    ]
+    highlights = ["Photo-ready routing", "Low-friction transit", "Moodboard-worthy stops"]
     return {
         "note": "Model returned plain text instead of JSON",
         "raw": compact,
         "text": compact,
-        "summary": compact or f"{headline} fallback is ready for review.",
-        "tags": tags[:6],
+        "summary": f"TripCanvas translated {subject} into a polished, photo-ready city itinerary.",
+        "tags": ["city escape", "visual route", "easy transit"],
         "items": items,
         "score": 88,
-        "insights": [f"Lead with {headline} on the first screen.", "Keep one clear action visible throughout the flow."],
-        "next_actions": ["Review the generated plan.", "Save the strongest output for the demo finale."],
+        "insights": ["Lead with the first-day route so the trip feels tangible immediately.", "Keep one signature visual moment on each day to make the itinerary feel memorable."],
+        "next_actions": ["Save the itinerary to the trip library.", "Swap one stop for a budget or nightlife variation before sharing."],
         "highlights": highlights,
     }
 
